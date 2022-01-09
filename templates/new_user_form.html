@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>Create New a User</h3>
+<form action="/users/new" method="POST">
+    <input type="text" name="first_name" placeholder = "First Name">
+    <input type="text" name="last_name" placeholder = "Last Name">
+    <input type="url" name="image_url" placeholder = "Profile Picture URL">
+    <button class = 'btn btn-warning'>Create User</button>
+</form>
+
+
+{% endblock %}
