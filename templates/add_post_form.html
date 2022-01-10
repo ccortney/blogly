@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>Add Post for {{user.first_name}} {{user.last_name}}</h3>
+
+<form action="/users/{{user.id}}/posts/new" method="POST">
+    
+    <label for="title">Title:<br>
+        <input type="text" name="title" required>
+    </label><br>
+    <label for="content">Content:<br>
+        <textarea id="content" ></textarea>
+    </label><br>
+    <a href="/users/{{user.id}}" class = 'btn btn-danger'>Cancel</a>
+    <button class = 'btn btn-success'>Add</button>   
+</form>
+
+
+
+{% endblock %}

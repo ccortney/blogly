@@ -22,3 +22,21 @@ class User(db.Model):
         """Show information about user"""
         u = self
         return f"<User {u.id} {u.first_name} {u.last_name} {u.image_url}"
+
+class Post(db.Model):
+    """Post."""
+
+    __tablename__ = "posts"
+
+    id = db.Column(db.Integer, primary_key = True, autoincrement= True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    title = db.Column(db.String(50), nullable = False)
+    content = db.Column(db.Text, nullable = True)
+    created_at = db.Column(db.DateTime)
+
+    user = db.relationship('User', backref = 'posts')
+
+    def __repr__(self):
+        """Show information about post"""
+        p = self
+        return f"<User {p.id} {p.title} {p.created_at}"
