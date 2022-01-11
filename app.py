@@ -2,7 +2,8 @@
 
 from flask import Flask, request, render_template, redirect
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User
+from models import db, connect_db, User, Post
+import datetime
 
 app = Flask(__name__)
 
@@ -50,7 +51,8 @@ def add_new_user():
 def show_user(user_id):
     """Show details about a single user"""
     user = User.query.get_or_404(user_id)
-    return render_template("user_details.html", user = user)
+    posts = Post.query.filter_by(user_id = user_id)
+    return render_template("user_details.html", user = user, posts = posts)
 
 @app.route('/users/<int:user_id>/edit')
 def edit_user_form(user_id):
@@ -90,3 +92,47 @@ def add_post_form(user_id):
 @app.route('/users/<int:user_id>/posts/new', methods = ["POST"])
 def add_post(user_id):
     """Adds the post"""
+    title = request.form["title"]
+    content = request.form["content"]
+
+    new_post = Post(user_id = user_id, title = title, content = content)
+    db.session.add(new_post)
+    db.session.commit()
+
+    return redirect(f'/users/{new_post.user_id}/posts/{new_post.id}')
+
+@app.route('/users/<int:user_id>/posts/<int:post_id>')
+def show_post(user_id, post_id):
+    """Shows post to user"""
+    user = User.query.get(user_id)
+    post = Post.query.get(post_id)
+    return render_template('post_details.html', user = user, post = post)
+
+@app.route('/users/<int:user_id>/posts/<int:post_id>/delete')
+def delete_post(user_id, post_id):
+    """Deletes a post"""
+    p = Post.query.filter_by(id = post_id)
+    p.delete()
+    p.session.commit()
+
+    return redirect(f'/users/{user_id}')
+
+@app.route('/users/<int:user_id>/posts/<int:post_id>/edit')
+def edit_post_form(user_id, post_id):
+    """Shows form to edit a post"""
+    post = Post.query.get_or_404(post_id)
+    return render_template("edit_post_form.html", post = post, user_id = user_id)
+
+@app.route('/users/<int:user_id>/posts/<int:post_id>/edit', methods = ["POST"])
+def edit_post(user_id, post_id):
+    """Edits a post"""
+    post = Post.query.get_or_404(post_id)
+    post.title = request.form["title"]
+    post.content = request.form["content"]
+    post.created_at = datetime.datetime.now()
+
+    db.session.add(post)
+    db.session.commit()
+    
+    post = User.query.get_or_404(user_id)
+    return redirect(f'/users/{user_id}/posts/{post_id}')

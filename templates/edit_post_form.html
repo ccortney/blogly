@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>Edit a Post</h3>
+<form action="/users/{{user_id}}/posts/{{post.id}}/edit" method="POST">
+    <label for="title">Title:<br>
+        <input type="text" name="title" value = "{{post.title}}"" required>
+    </label><br>
+    <label for="content">Content:<br>
+        <textarea id="content" name = "content" value = {{post.content}}>{{post.content}}</textarea>
+    </label><br>
+    <a href="/users/{{user_id}}/posts/{{post.id}}" class = 'btn btn-danger'>Cancel</a>
+    <button class = 'btn btn-success'>Save</button>   
+</form>
+
+
+{% endblock %}

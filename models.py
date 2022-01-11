@@ -1,5 +1,6 @@
 """Models for Blogly."""
 from flask_sqlalchemy import SQLAlchemy
+import datetime
 
 db = SQLAlchemy()
 
@@ -29,14 +30,14 @@ class Post(db.Model):
     __tablename__ = "posts"
 
     id = db.Column(db.Integer, primary_key = True, autoincrement= True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable = False)
     title = db.Column(db.String(50), nullable = False)
     content = db.Column(db.Text, nullable = True)
-    created_at = db.Column(db.DateTime)
+    created_at = db.Column(db.DateTime, default = datetime.datetime.now())
 
-    user = db.relationship('User', backref = 'posts')
+    users = db.relationship('User', backref = 'posts')
 
     def __repr__(self):
         """Show information about post"""
         p = self
-        return f"<User {p.id} {p.title} {p.created_at}"
+        return f"<User {p.id} {p.title}"

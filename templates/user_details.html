@@ -9,6 +9,12 @@
 <a href="/users" class = 'btn btn-secondary'>Return to All Users</a>
 
 <h2>Posts</h2>
+    <ul>
+        {% for post in posts %}
+            <li><a href="/users/{{user.id}}/posts/{{post.id}}">{{post.title}}</a></li>
+        {% endfor %}    
+    </ul>
+
 <a href="/users/{{user.id}}/posts/new" class = 'btn btn-primary'>Add Post</a>
 
 
