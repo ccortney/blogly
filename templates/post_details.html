@@ -3,12 +3,17 @@
 {% block content %}
 <h3>{{post.title}}</h3>
 <p>{{post.content}}</p>
-<p><small>{{post.created_at}}</small></p>
+<p><small>Created by {{user.first_name}} {{user.last_name}} at {{post.created_at}}</small></p>
 
+<p><b>Tags:</b>
+{% for tag in tags %}
+<a href="/tags/{{tag.id}}" class = "badge badge-primary">{{tag.name}} </a>
+{% endfor %}
+</p>
 
 <a href="/users/{{post.user_id}}/posts/{{post.id}}/edit" class = 'btn btn-primary'>Edit</a>
 <a href="/users/{{post.user_id}}/posts/{{post.id}}/delete" class = 'btn btn-danger'>Delete</a>
-<a href="/users/{{post.user_id}}" class = 'btn btn-secondary'>Go Back</a>
+<a href="/users/{{post.user_id}}" class = 'btn btn-secondary'>Back to User</a>
 
 
 {% endblock %}

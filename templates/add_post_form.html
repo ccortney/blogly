@@ -11,8 +11,15 @@
     <label for="content">Content:<br>
         <textarea id="content" name = "content"></textarea>
     </label><br>
-    <a href="/users/{{user.id}}" class = 'btn btn-danger'>Cancel</a>
+    <label for="tags">Tags</label>:<br>
+        {% for tag in tags %}
+        <input type="checkbox" id={{tag.id}} name ="tags" value ={{tag.id}}>
+            <label for={{tag.id}}>{{tag.name}}</label><br>
+        {% endfor %}
+    </label><br>
     <button class = 'btn btn-success'>Add</button>   
+    <a href="/users/{{user.id}}" class = 'btn btn-danger'>Cancel</a>
+    
 </form>
 
 

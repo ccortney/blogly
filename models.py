@@ -1,6 +1,9 @@
 """Models for Blogly."""
+from enum import unique
 from flask_sqlalchemy import SQLAlchemy
 import datetime
+
+from jinja2.runtime import unicode_join
 
 db = SQLAlchemy()
 
@@ -22,7 +25,7 @@ class User(db.Model):
     def __repr__(self):
         """Show information about user"""
         u = self
-        return f"<User {u.id} {u.first_name} {u.last_name} {u.image_url}"
+        return f"<User {u.id} {u.first_name} {u.last_name} {u.image_url}>"
 
 class Post(db.Model):
     """Post."""
@@ -40,4 +43,28 @@ class Post(db.Model):
     def __repr__(self):
         """Show information about post"""
         p = self
-        return f"<Post {p.user_id} {p.title} {p.content} {p.created_at}"
+        return f"<Post {p.user_id} {p.title} {p.content} {p.created_at}>"
+
+class Tag(db.Model):
+    """Tag."""
+
+    __tablename__ = "tags"
+
+    id = db.Column(db.Integer, primary_key = True, autoincrement= True)
+    name = db.Column(db.String(50), nullable = False, unique = True)
+
+
+    def __repr__(self):
+        """Show information about tag"""
+        t = self
+        return f"<Tag {t.id} {t.name}>"
+
+    posts = db.relationship('Post', secondary = "posts_tags", backref = 'tags')
+
+class PostTag(db.Model):
+    """Post/Tag."""
+
+    __tablename__ = "posts_tags"
+
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), primary_key = True)
+    tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'), primary_key = True)

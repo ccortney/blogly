@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>{{tag.name}}</h3>
+
+<ul>
+    {% for post in posts %}
+    <li><a href="/users/{{post.user_id}}/posts/{{post.id}}">{{post.title}}</a></li>
+    {% endfor %}
+</ul>
+<a href="/tags/{{tag.id}}/edit" class = 'btn btn-primary'>Edit Tag</a>
+<a href="/tags/{{tag.id}}/delete" class = 'btn btn-danger'>Delete</a>
+<a href="/tags" class = 'btn btn-secondary'>Back to Tags</a>
+{% endblock %}
